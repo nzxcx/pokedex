@@ -1,0 +1,14 @@
+### Get Pokemon by ID (Bulbasaur)
+GET http://localhost:8080/pokemon/1
+
+### Get Pokemon by ID (Charizard)
+GET http://localhost:8080/pokemon/6
+
+### Get Pokemon by ID (Pikachu)
+GET http://localhost:8080/pokemon/25
+
+### Test invalid Pokemon ID
+GET http://localhost:8080/pokemon/abc
+
+### Test non-existent Pokemon ID
+GET http://localhost:8080/pokemon/9999999 
