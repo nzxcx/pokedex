@@ -7,6 +7,9 @@ GET http://localhost:8080/pokemon/6
 ### Get Pokemon by ID (Pikachu)
 GET http://localhost:8080/pokemon/25
 
+### Get Pokemon by ID (Blaziken)
+GET http://localhost:8080/pokemon/257
+
 ### Test invalid Pokemon ID
 GET http://localhost:8080/pokemon/abc
 
