@@ -1,13 +1,13 @@
-import { createRootRoute } from '@tanstack/react-router'
+import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { NavDock } from '@/components/nav-dock'
 
 export const Route = createRootRoute({
   component: () => {
     return (
-      <div>
+      <div className="min-h-screen bg-background">
         <Outlet />
+        <NavDock />
       </div>
     )
   },
 })
-
-import { Outlet } from '@tanstack/react-router' 

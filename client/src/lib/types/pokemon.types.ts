@@ -21,10 +21,3 @@ export interface PokemonListParams {
   page?: number;
   pageSize?: number;
 }
-
-export interface PokemonResponse {
-  total: number;
-  next_page: string | null;
-  prev_page: string | null;
-  items: PokemonListItem[];
-}

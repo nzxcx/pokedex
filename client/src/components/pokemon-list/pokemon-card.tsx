@@ -4,10 +4,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { Pokemon } from "@/lib/types"
+import { PokemonListItem } from "@/lib/types/pokemon.types"
 
 interface PokemonCardProps {
-  pokemon: Pokemon
+  pokemon: PokemonListItem
 }
 
 export function PokemonCard({ pokemon }: PokemonCardProps) {

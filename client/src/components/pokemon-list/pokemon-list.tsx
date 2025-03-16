@@ -1,6 +1,7 @@
 import { useState } from "react"
-import { PokemonCard } from "./pokemon-card"
 import { usePokemonList } from "@/hooks/usePokemon"
+import { PokemonListItem } from "@/lib/types/pokemon.types"
+import { PokemonCard } from "./pokemon-card"
 import {
   Pagination,
   PaginationContent,
@@ -10,6 +11,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Link } from "@tanstack/react-router"
 
 export function PokemonList() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -60,8 +62,14 @@ export function PokemonList() {
         {data?.items && data.items.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-              {data.items.map((pokemon) => (
-                <PokemonCard key={pokemon.id} pokemon={pokemon} />
+              {data.items.map((pokemon: PokemonListItem) => (
+                <Link
+                  to="/pokemon/$number"
+                  params={{ number: pokemon.id.toString() }}
+                  key={pokemon.id}
+                >
+                  <PokemonCard pokemon={pokemon} />
+                </Link>
               ))}
             </div>
 

@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { PokemonList } from '@/components/pokemon-list'
-import { ThemeToggle } from '@/components/theme/theme-toggle'
+import { PokemonList } from '@/components/pokemon-list/pokemon-list'
 
 export const Route = createFileRoute('/list')({
   component: ListPage,
@@ -9,10 +8,8 @@ export const Route = createFileRoute('/list')({
 function ListPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-background/80">
-      <div className="fixed top-4 right-4 z-50">
-        <ThemeToggle />
-      </div>
       <PokemonList />
     </div>
   )
 } 
+  // Add any other fields needed for the list view
