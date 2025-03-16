@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react"
-import { Pokemon } from "@/lib/types"
-import { PokemonCard } from "./PokemonCard"
-import { config } from "@/config/env"
+import { useState } from "react"
+import { PokemonCard } from "./pokemon-card"
+import { usePokemonList } from "@/hooks/usePokemon"
 import {
   Pagination,
   PaginationContent,
@@ -13,44 +12,15 @@ import {
 } from "@/components/ui/pagination"
 
 export function PokemonList() {
-  const [pokemon, setPokemon] = useState<Pokemon[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
   const pageSize = 20
 
-  useEffect(() => {
-    const fetchPokemon = async () => {
-      try {
-        setIsLoading(true)
-        const response = await fetch(
-          `${config.apiUrl}/pokemon?page=${currentPage}&pageSize=${pageSize}`
-        )
-        
-        if (!response.ok) {
-          throw new Error(`Failed to fetch Pokemon: ${response.statusText}`)
-        }
-        
-        const rawData = await response.json()
-        
-        if (!rawData || !Array.isArray(rawData.items)) {
-          throw new Error("Invalid API response format")
-        }
+  const { data, isLoading, isError, error } = usePokemonList({
+    page: currentPage,
+    pageSize,
+  })
 
-        setPokemon(rawData.items)
-        setTotalPages(Math.ceil(rawData.total / pageSize))
-      } catch (err) {
-        console.error("Error fetching pokemon:", err)
-        setError(err instanceof Error ? err.message : "Failed to fetch Pokemon")
-        setPokemon([])
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    fetchPokemon()
-  }, [currentPage])
+  const totalPages = data ? Math.ceil(data.total / pageSize) : 0
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
@@ -70,13 +40,13 @@ export function PokemonList() {
     )
   }
 
-  if (error) {
+  if (isError) {
     return (
       <div className="min-h-screen bg-background px-4 py-8 md:px-8">
         <div className="mx-auto max-w-7xl">
           <h1 className="text-3xl font-bold tracking-tight text-foreground mb-8">Pokédex</h1>
           <div className="flex items-center justify-center min-h-[400px] text-destructive">
-            {error}
+            {error instanceof Error ? error.message : "Failed to fetch Pokemon"}
           </div>
         </div>
       </div>
@@ -87,11 +57,11 @@ export function PokemonList() {
     <div className="min-h-screen bg-background px-4 py-8 md:px-8">
       <div className="mx-auto max-w-7xl">
         <h1 className="text-3xl font-bold tracking-tight text-foreground mb-8">Pokédex</h1>
-        {pokemon && pokemon.length > 0 ? (
+        {data?.items && data.items.length > 0 ? (
           <>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-12">
-              {pokemon.map((p) => (
-                <PokemonCard key={p.id} pokemon={p} />
+              {data.items.map((pokemon) => (
+                <PokemonCard key={pokemon.id} pokemon={pokemon} />
               ))}
             </div>
 
@@ -100,8 +70,9 @@ export function PokemonList() {
                 <PaginationItem>
                   <PaginationPrevious
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className={`${currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'} 
-                      border-0 bg-card hover:bg-accent text-foreground`}
+                    className={`${
+                      currentPage === 1 ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+                    } border border-border bg-background hover:bg-accent hover:text-accent-foreground transition-colors`}
                   />
                 </PaginationItem>
 
@@ -117,10 +88,10 @@ export function PokemonList() {
                         <PaginationLink
                           onClick={() => handlePageChange(page)}
                           isActive={currentPage === page}
-                          className={`cursor-pointer border-0 ${
+                          className={`cursor-pointer transition-colors ${
                             currentPage === page
-                              ? 'bg-primary text-primary-foreground hover:bg-primary/90'
-                              : 'bg-card text-foreground hover:bg-accent'
+                              ? 'bg-accent text-accent-foreground font-medium'
+                              : 'border border-border bg-background hover:bg-accent hover:text-accent-foreground'
                           }`}
                         >
                           {page}
@@ -144,8 +115,9 @@ export function PokemonList() {
                 <PaginationItem>
                   <PaginationNext
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className={`${currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'}
-                      border-0 bg-card hover:bg-accent text-foreground`}
+                    className={`${
+                      currentPage === totalPages ? 'pointer-events-none opacity-50' : 'cursor-pointer'
+                    } border border-border bg-background hover:bg-accent hover:text-accent-foreground transition-colors`}
                   />
                 </PaginationItem>
               </PaginationContent>
