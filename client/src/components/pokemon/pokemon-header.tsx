@@ -1,4 +1,5 @@
 import { Pokemon } from "@/lib/types/pokemon.types"
+import { PokemonTypeBadge } from "./pokemon-type-badge"
 
 interface PokemonHeaderProps {
   pokemon: Pokemon
@@ -13,12 +14,7 @@ export function PokemonHeader({ pokemon }: PokemonHeaderProps) {
       </h1>
       <div className="mt-4 flex justify-center gap-3">
         {pokemon.types.map((type) => (
-          <span
-            key={type}
-            className="rounded-full bg-primary/10 px-4 py-1.5 text-sm font-medium capitalize text-primary"
-          >
-            {type}
-          </span>
+          <PokemonTypeBadge key={type} type={type} size="lg" />
         ))}
       </div>
     </div>
