@@ -1,6 +1,9 @@
 package main
 
 import (
+	"log"
+
+	"pokeapp/api/infrastructure/config"
 	"pokeapp/api/infrastructure/repository"
 	"pokeapp/api/interfaces/http/handlers"
 	"pokeapp/api/interfaces/http/routes"
@@ -11,6 +14,12 @@ import (
 )
 
 func main() {
+	// Load configuration
+	cfg, err := config.Load()
+	if err != nil {
+		log.Fatalf("Failed to load configuration: %v", err)
+	}
+
 	// Initialize Echo
 	e := echo.New()
 
@@ -28,5 +37,6 @@ func main() {
 	routes.SetupRoutes(e, pokemonHandler)
 
 	// Start server
-	e.Logger.Fatal(e.Start(":8080"))
+	log.Printf("Server starting on %s", cfg.GetServerAddress())
+	e.Logger.Fatal(e.Start(cfg.GetServerAddress()))
 }

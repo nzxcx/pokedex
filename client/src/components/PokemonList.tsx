@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { Pokemon } from "@/lib/types"
 import { PokemonCard } from "./PokemonCard"
+import { config } from "@/config/env"
 import {
   Pagination,
   PaginationContent,
@@ -24,7 +25,7 @@ export function PokemonList() {
       try {
         setIsLoading(true)
         const response = await fetch(
-          `http://localhost:8080/pokemon?page=${currentPage}&pageSize=${pageSize}`
+          `${config.apiUrl}/pokemon?page=${currentPage}&pageSize=${pageSize}`
         )
         
         if (!response.ok) {
