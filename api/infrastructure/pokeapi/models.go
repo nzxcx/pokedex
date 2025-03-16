@@ -1,6 +1,17 @@
-package models
+package pokeapi
 
-type Pokemon struct {
+type ListPokemonResponse struct {
+	Count    int    `json:"count"`
+	Next     string `json:"next"`
+	Previous string `json:"previous"`
+	Results  []struct {
+		Name string `json:"name"`
+		ID   int    `json:"id"`
+		URL  string `json:"url"`
+	} `json:"results"`
+}
+
+type PokemonResponse struct {
 	ID      int     `json:"id"`
 	Name    string  `json:"name"`
 	Types   []Type  `json:"types"`
@@ -20,4 +31,4 @@ type Type struct {
 type Sprites struct {
 	FrontDefault string `json:"front_default"`
 	BackDefault  string `json:"back_default"`
-}
+} 

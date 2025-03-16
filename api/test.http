@@ -14,4 +14,16 @@ GET http://localhost:8080/pokemon/257
 GET http://localhost:8080/pokemon/abc
 
 ### Test non-existent Pokemon ID
-GET http://localhost:8080/pokemon/9999999 
+GET http://localhost:8080/pokemon/9999999
+
+### Get Pokemon List (Default pagination - page 1, size 50)
+GET http://localhost:8080/pokemon
+
+### Get Pokemon List (Page 2, size 50)
+GET http://localhost:8080/pokemon?page=2
+
+### Get Pokemon List (Custom page size)
+GET http://localhost:8080/pokemon?page=1&pageSize=20
+
+### Test invalid pagination parameters (should use defaults)
+GET http://localhost:8080/pokemon?page=-1&pageSize=0 

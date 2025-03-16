@@ -42,3 +42,24 @@ func (h *PokemonHandler) GetPokemon(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, pokemon)
 }
+
+func (h *PokemonHandler) ListPokemon(c echo.Context) error {
+	page, err := strconv.Atoi(c.QueryParam("page"))
+	if err != nil || page < 1 {
+		page = 1
+	}
+
+	pageSize, err := strconv.Atoi(c.QueryParam("pageSize"))
+	if err != nil || pageSize < 1 || pageSize > 100 {
+		pageSize = 50
+	}
+
+	pokemons, err := h.pokemonUseCase.ListPokemon(c.Request().Context(), page, pageSize)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to fetch Pokemon list",
+		})
+	}
+
+	return c.JSON(http.StatusOK, pokemons)
+}

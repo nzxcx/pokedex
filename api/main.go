@@ -3,6 +3,7 @@ package main
 import (
 	"pokeapp/api/infrastructure/repository"
 	"pokeapp/api/interfaces/http/handlers"
+	"pokeapp/api/interfaces/http/routes"
 	"pokeapp/api/usecase"
 
 	"github.com/labstack/echo/v4"
@@ -23,8 +24,8 @@ func main() {
 	pokemonUseCase := usecase.NewPokemonUseCase(pokemonRepo)
 	pokemonHandler := handlers.NewPokemonHandler(pokemonUseCase)
 
-	// Routes
-	e.GET("/pokemon/:id", pokemonHandler.GetPokemon)
+	// Setup routes
+	routes.SetupRoutes(e, pokemonHandler)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
