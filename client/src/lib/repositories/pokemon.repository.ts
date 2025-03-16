@@ -1,7 +1,8 @@
 import { config } from "@/config/env";
+import { PaginatedResponse } from "@/lib/types/api.types";
 import {
   Pokemon,
-  PokemonResponse,
+  PokemonListItem,
   PokemonListParams,
 } from "@/lib/types/pokemon.types";
 
@@ -15,7 +16,7 @@ class PokemonRepository {
     if (!response.ok) {
       throw new Error("Failed to fetch Pokemon list");
     }
-    return response.json() as Promise<PokemonResponse>;
+    return response.json() as Promise<PaginatedResponse<PokemonListItem>>;
   }
 
   async getPokemonById(id: number) {
